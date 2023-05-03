@@ -21,7 +21,7 @@ const ContactSchema = new mongoose.Schema({
     social_url: String,
     email: String,
     phone: String,
-    comments: String,
+    comments: [String],
 })
 
 module.exports = mongoose.model('Contact', ContactSchema)

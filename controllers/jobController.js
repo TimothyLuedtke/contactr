@@ -31,33 +31,21 @@ exports.createJob = async (req, res) => {
         // Initiallize variables
         let sourceCompanyId;
         let sourceContactId;
+
         // Check if company exists
-        if (company === "newCompany" && newCompany && newCompany.companyName) {
+        // if not, create new company
+        if (companyName === "newCompany") {
+            // extract company data from req.body
+            const { contactId, jobId, companyName, url, companyDescription, comments } = req.body
             // If company does not exist, create new company
             const newCompany = await Company.create({
                 userId: uniqID,
-                companyName: companyName,
-                dateAdded: new Date(),
-                url: "",
-                role: "",
-                roleURL: "",
-                position: "",
-                source: "",
-                pointOfContact: {
-                    name: "",
-                    position: "",
-                    email: "",
-                },
-                application: {
-                    applied: false,
-                    applyDate: "",
-                    coffeeChat: false,
-                    coffeeChatDate: "",
-                    saidThanks: false,
-                    interviewDate: "",
-                    followUpDate: "",
-                },
-                comments: "",
+                contactId,
+                jobId,
+                companyName,
+                url,
+                companyDescription,
+                comments
             })
             // Set sourceCompanyId to newCompany._id
             sourceCompanyId = newCompany._id
@@ -66,17 +54,19 @@ exports.createJob = async (req, res) => {
             sourceCompanyId = companyName
         }
         // Check if contact exists
-        if (contactName === "newContact" && newContact && newContact.contactName) {
-            // If contact does not exist, create new contact
+        // if not, create new contact
+        if (contactName === "newContact") {
+            // extract contact data from req.body
+            const { jobIds, contactName, position, social_url, email, phone, comments } = req.body
             const newContact = await Contact.create({
                 userId: uniqID,
-                contactName: contactName,
-                dateAdded: new Date(),
-                position: "",
-                email: "",
-                company: "",
-                companyURL: "",
-                comments: "",
+                jobIds,
+                contactName,
+                position,
+                social_url,
+                email,
+                phone,
+                comments
             })
             // Set sourceContactId to newContact._id
             sourceContactId = newContact._id
